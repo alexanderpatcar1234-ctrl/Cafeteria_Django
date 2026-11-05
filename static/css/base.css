@@ -1,0 +1,40 @@
+/* =========================================================
+   ESTILO GENERAL DEL SISTEMA
+========================================================= */
+
+body {
+
+    /* Fondo claro para todas las páginas */
+    background-color: #f4f4f4;
+
+}
+
+
+/* Mejoramos la presentación de los formularios
+   generados automáticamente por Django */
+
+form input,
+form select,
+form textarea {
+
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+
+}
+
+
+/* Los formularios de la barra de navegación
+   no deben ocupar todo el ancho */
+
+.navbar form {
+
+    width: auto;
+
+}
+
+.navbar form button {
+
+    width: auto;
+
+}

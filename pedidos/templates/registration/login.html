@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<div class="row justify-content-center">
+
+    <div class="col-md-5">
+
+        <div class="card shadow">
+
+            <div class="card-body">
+
+                <h2 class="text-center mb-4">
+                    Iniciar sesión
+                </h2>
+
+
+                <!-- Formulario proporcionado por Django -->
+                <form method="post">
+
+                    <!-- Protección de Django contra CSRF -->
+                    {% csrf_token %}
+
+
+                    <!-- Campos username y password -->
+                    {{ form.as_p }}
+
+
+                    <!-- Si el usuario intentó entrar a una vista
+                         protegida, conservamos esa dirección. -->
+                    {% if next %}
+
+                    <input
+                        type="hidden"
+                        name="next"
+                        value="{{ next }}"
+                    >
+
+                    {% endif %}
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary w-100"
+                    >
+                        Ingresar
+                    </button>
+
+                </form>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{% endblock %}

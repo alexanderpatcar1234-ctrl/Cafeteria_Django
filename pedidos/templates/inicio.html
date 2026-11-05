@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<div class="p-4 bg-white rounded shadow-sm">
+
+    <h1>
+        Sistema web de pedidos
+    </h1>
+
+
+    <p class="lead">
+
+        Bienvenido,
+
+        <strong>
+            {{ user.first_name|default:user.username }}
+        </strong>
+
+    </p>
+
+
+    <p>
+        El sistema se encuentra correctamente configurado.
+    </p>
+
+
+    <!-- =====================================================
+         INFORMACIÓN PARA ADMINISTRADORES
+    ====================================================== -->
+
+    {% if user.is_staff %}
+
+    <div class="alert alert-warning">
+
+        <strong>
+            Usuario administrador
+        </strong>
+
+        <p class="mb-2">
+
+            Puede administrar usuarios, categorías,
+            productos y pedidos.
+
+        </p>
+
+        <a
+            href="{% url 'admin:index' %}"
+            class="btn btn-dark"
+        >
+            Ir a Administración
+        </a>
+
+    </div>
+
+
+    {% else %}
+
+    <div class="alert alert-info">
+
+        Ha ingresado como usuario del sistema.
+
+    </div>
+
+    {% endif %}
+
+
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,111 @@
+# =========================================================
+# WORKFLOW PARA COMPROBAR EL PROYECTO DJANGO
+# =========================================================
+
+# Nombre visible dentro de GitHub Actions.
+name: Verificar proyecto Django
+
+
+# =========================================================
+# EVENTOS
+# =========================================================
+
+# Ejecutar el workflow después de:
+# - un push
+# - un Pull Request
+on:
+  push:
+  pull_request:
+
+
+# =========================================================
+# TRABAJOS
+# =========================================================
+
+jobs:
+
+  # Trabajo encargado de comprobar Django.
+  verificar:
+
+    # Máquina virtual proporcionada por GitHub.
+    runs-on: ubuntu-latest
+
+
+    # =====================================================
+    # PASOS
+    # =====================================================
+
+    steps:
+
+
+      # ---------------------------------------------------
+      # PASO 1
+      # Descargar el código del repositorio.
+      # ---------------------------------------------------
+
+      - name: Obtener repositorio
+        uses: actions/checkout@v7
+
+
+      # ---------------------------------------------------
+      # PASO 2
+      # Preparar Python.
+      # ---------------------------------------------------
+
+      - name: Configurar Python
+        uses: actions/setup-python@v7
+
+        with:
+
+          # Versión utilizada por el proyecto.
+          python-version: "3.14"
+
+          # Utilizar requirements.txt para cachear pip.
+          cache: "pip"
+
+
+      # ---------------------------------------------------
+      # PASO 3
+      # Instalar las dependencias.
+      # ---------------------------------------------------
+
+      - name: Instalar dependencias
+
+        run: |
+
+          # Actualizar pip.
+          python -m pip install --upgrade pip
+
+          # Instalar las bibliotecas del proyecto.
+          pip install -r requirements.txt
+
+
+      # ---------------------------------------------------
+      # PASO 4
+      # Verificar configuración general de Django.
+      # ---------------------------------------------------
+
+      - name: Verificar proyecto Django
+
+        run: python manage.py check
+
+
+      # ---------------------------------------------------
+      # PASO 5
+      # Comprobar que no existan cambios en models.py
+      # sin una migración correspondiente.
+      # ---------------------------------------------------
+
+      - name: Comprobar migraciones
+
+        run: python manage.py makemigrations --check --dry-run
+
+
+      # ---------------------------------------------------
+      # PASO 6
+      # Comprobar que las migraciones puedan aplicarse.
+      # ---------------------------------------------------
+
+      - name: Aplicar migraciones
+
+        run: python manage.py migrate
