@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<!-- =====================================================
+     ENCABEZADO
+====================================================== -->
+
+<div class="mb-4">
+
+    <h1>
+        Tienda
+    </h1>
+
+    <p class="text-muted">
+        Productos disponibles en nuestra cafetería.
+    </p>
+
+</div>
+
+
+<!-- =====================================================
+     PRODUCTOS
+====================================================== -->
+
+<div class="row g-4">
+
+
+    <!-- Recorremos todos los productos enviados
+         desde la vista tienda(). -->
+
+    {% for producto in productos %}
+
+
+    <div class="col-md-6 col-lg-4">
+
+
+        <div class="card h-100 shadow-sm">
+
+
+            <!-- ==========================================
+                 IMAGEN
+            =========================================== -->
+
+            {% if producto.imagen %}
+
+                <!-- Si el producto tiene una imagen,
+                     mostramos el archivo almacenado
+                     dentro de media/productos/. -->
+
+                <img
+                    src="{{ producto.imagen.url }}"
+                    class="card-img-top producto-imagen"
+                    alt="{{ producto.nombre }}"
+                >
+
+            {% else %}
+
+                <!-- Si no existe una imagen mostramos
+                     un espacio informativo. -->
+
+                <div class="producto-sin-imagen">
+
+                    Sin imagen
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- ==========================================
+                 INFORMACIÓN DEL PRODUCTO
+            =========================================== -->
+
+            <div class="card-body">
+
+
+                <!-- Nombre -->
+                <h5 class="card-title">
+
+                    {{ producto.nombre }}
+
+                </h5>
+
+
+                <!-- Categoría -->
+                <p class="text-muted mb-2">
+
+                    Categoría:
+
+                    {% if producto.categoria %}
+
+                        {{ producto.categoria.nombre }}
+
+                    {% else %}
+
+                        Sin categoría
+
+                    {% endif %}
+
+                </p>
+
+
+                <!-- Descripción -->
+                <p class="card-text">
+
+                    {{ producto.descripcion|default:"Sin descripción." }}
+
+                </p>
+
+
+                <!-- Precio -->
+                <h4 class="text-primary">
+
+                    S/ {{ producto.precio }}
+
+                </h4>
+
+
+                <!-- ======================================
+                     STOCK
+                ======================================= -->
+
+                {% if producto.stock > 0 %}
+
+                    <span class="badge text-bg-success">
+
+                        Stock: {{ producto.stock }}
+
+                    </span>
+
+                {% else %}
+
+                    <span class="badge text-bg-danger">
+
+                        Sin stock
+
+                    </span>
+
+                {% endif %}
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    {% empty %}
+
+
+    <!-- Este bloque se mostrará si no existen
+         productos activos en la base de datos. -->
+
+    <div class="col-12">
+
+        <div class="alert alert-info">
+
+            Actualmente no existen productos disponibles.
+
+        </div>
+
+    </div>
+
+
+    {% endfor %}
+
+
+</div>
+
+
+{% endblock %}

@@ -1,126 +1,250 @@
 {% load static %}
 
+
 <!DOCTYPE html>
+
 <html lang="es">
+
 
 <head>
 
+
     <meta charset="UTF-8">
+
 
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1"
     >
 
+
     <title>
+
         Sistema de Cafetería
+
     </title>
 
-    <!-- Bootstrap -->
+
+    <!-- =================================================
+         BOOTSTRAP
+    ================================================== -->
+
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet"
     >
 
-    <!-- CSS propio -->
+
+    <!-- =================================================
+         CSS PROPIO
+    ================================================== -->
+
     <link
         rel="stylesheet"
         href="{% static 'css/base.css' %}"
     >
 
+
 </head>
+
 
 <body>
 
 
 <!-- =====================================================
-     BARRA DE NAVEGACIÓN
-     Solo aparece si existe un usuario autenticado.
+     NAVEGACIÓN
 ====================================================== -->
 
 {% if user.is_authenticated %}
 
-<nav class="navbar navbar-dark bg-dark">
+
+<nav
+    class="navbar navbar-expand-lg bg-dark"
+    data-bs-theme="dark"
+>
+
 
     <div class="container">
 
-        <!-- Enlace al módulo principal -->
+
+        <!-- Nombre del sistema -->
         <a
             class="navbar-brand"
             href="{% url 'inicio' %}"
         >
+
             Cafetería
+
         </a>
 
 
-        <div class="d-flex align-items-center gap-2">
+        <!-- Botón utilizado en pantallas pequeñas -->
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#menuPrincipal"
+        >
 
-            <!-- Usuario actualmente autenticado -->
-            <span class="text-white">
-                Usuario: {{ user.username }}
-            </span>
+            <span class="navbar-toggler-icon"></span>
 
-
-            <!-- =================================================
-                 OPCIONES SOLO PARA ADMINISTRADORES
-            ================================================== -->
-
-            {% if user.is_staff %}
-
-            <a
-                href="{% url 'admin:index' %}"
-                class="btn btn-warning btn-sm"
-            >
-                Administración
-            </a>
-
-            {% endif %}
+        </button>
 
 
-            <!-- =================================================
-                 CERRAR SESIÓN
-                 Se utiliza POST por seguridad.
-            ================================================== -->
+        <!-- =============================================
+             MENÚ PRINCIPAL
+        ============================================== -->
 
-            <form
-                method="post"
-                action="{% url 'logout' %}"
-                class="d-inline"
-            >
+        <div
+            class="collapse navbar-collapse"
+            id="menuPrincipal"
+        >
 
-                {% csrf_token %}
 
-                <button
-                    type="submit"
-                    class="btn btn-outline-light btn-sm"
+            <div class="navbar-nav me-auto">
+
+
+                <!-- INICIO -->
+                <a
+                    class="nav-link"
+                    href="{% url 'inicio' %}"
                 >
-                    Cerrar sesión
-                </button>
 
-            </form>
+                    Inicio
+
+                </a>
+
+
+                <!-- TIENDA -->
+                <a
+                    class="nav-link"
+                    href="{% url 'tienda' %}"
+                >
+
+                    Tienda
+
+                </a>
+
+
+                <!-- MIS PEDIDOS -->
+                <a
+                    class="nav-link"
+                    href="{% url 'mis_pedidos' %}"
+                >
+
+                    Mis pedidos
+
+                </a>
+
+
+            </div>
+
+
+            <!-- =========================================
+                 USUARIO
+            ========================================== -->
+
+            <div class="d-flex align-items-center gap-2">
+
+
+                <span class="navbar-text text-white">
+
+                    {{ user.username }}
+
+                </span>
+
+
+                <!-- =====================================
+                     SOLO ADMINISTRADORES
+                ====================================== -->
+
+                {% if user.is_staff %}
+
+
+                <a
+                    href="{% url 'admin:index' %}"
+                    class="btn btn-warning btn-sm"
+                >
+
+                    Administración
+
+                </a>
+
+
+                {% endif %}
+
+
+                <!-- =====================================
+                     CERRAR SESIÓN
+                ====================================== -->
+
+                <form
+                    method="post"
+                    action="{% url 'logout' %}"
+                    class="m-0"
+                >
+
+
+                    {% csrf_token %}
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-outline-light btn-sm"
+                    >
+
+                        Cerrar sesión
+
+                    </button>
+
+
+                </form>
+
+
+            </div>
+
 
         </div>
 
+
     </div>
 
+
 </nav>
+
 
 {% endif %}
 
 
 <!-- =====================================================
-     CONTENIDO DE CADA PÁGINA
+     CONTENIDO VARIABLE
 ====================================================== -->
 
-<div class="container mt-4">
+<main class="container py-4">
+
 
     {% block content %}
 
+
     {% endblock %}
 
-</div>
+
+</main>
+
+
+<!-- =====================================================
+     JAVASCRIPT DE BOOTSTRAP
+     Permite utilizar el menú desplegable en pantallas
+     pequeñas.
+====================================================== -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+>
+</script>
 
 
 </body>
+
 
 </html>

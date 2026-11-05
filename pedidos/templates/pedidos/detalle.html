@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<!-- =====================================================
+     INFORMACIÓN GENERAL
+====================================================== -->
+
+<div class="mb-4">
+
+    <h1>
+
+        Pedido #{{ pedido.id }}
+
+    </h1>
+
+
+    <p>
+
+        <strong>
+            Fecha:
+        </strong>
+
+        {{ pedido.fecha|date:"d/m/Y H:i" }}
+
+    </p>
+
+
+    <p>
+
+        <strong>
+            Estado:
+        </strong>
+
+        {{ pedido.get_estado_display }}
+
+    </p>
+
+</div>
+
+
+<!-- =====================================================
+     DETALLE DE PRODUCTOS
+====================================================== -->
+
+<div class="card shadow-sm">
+
+
+    <div class="card-header">
+
+        Productos del pedido
+
+    </div>
+
+
+    <div class="card-body">
+
+
+        {% if detalles %}
+
+
+        <div class="table-responsive">
+
+
+            <table class="table table-bordered align-middle">
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Producto
+                        </th>
+
+                        <th>
+                            Precio unitario
+                        </th>
+
+                        <th>
+                            Cantidad
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    {% for detalle in detalles %}
+
+
+                    <tr>
+
+
+                        <td>
+
+                            {{ detalle.producto.nombre }}
+
+                        </td>
+
+
+                        <td>
+
+                            S/ {{ detalle.producto.precio }}
+
+                        </td>
+
+
+                        <td>
+
+                            {{ detalle.cantidad }}
+
+                        </td>
+
+
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+        {% else %}
+
+
+        <div class="alert alert-warning">
+
+            Este pedido no contiene productos.
+
+        </div>
+
+
+        {% endif %}
+
+
+        <!-- ==============================================
+             TOTAL
+        =============================================== -->
+
+        <div class="text-end mt-3">
+
+            <h4>
+
+                Total:
+                S/ {{ pedido.total }}
+
+            </h4>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     REGRESAR
+====================================================== -->
+
+<a
+    href="{% url 'mis_pedidos' %}"
+    class="btn btn-secondary mt-3"
+>
+    Volver a Mis pedidos
+</a>
+
+
+{% endblock %}

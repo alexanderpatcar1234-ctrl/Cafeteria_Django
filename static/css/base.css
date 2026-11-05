@@ -38,3 +38,71 @@ form textarea {
     width: auto;
 
 }
+/* =========================================================
+   ESTILO GENERAL
+========================================================= */
+
+body {
+
+    /* Fondo general de la aplicación */
+    background-color: #f5f5f5;
+
+}
+
+
+/* =========================================================
+   IMÁGENES DE PRODUCTOS
+========================================================= */
+
+.producto-imagen {
+
+    /* Todas las imágenes tendrán la misma altura */
+    height: 220px;
+
+    /* Evita deformar la imagen */
+    object-fit: cover;
+
+}
+
+
+/* =========================================================
+   PRODUCTOS SIN IMAGEN
+========================================================= */
+
+.producto-sin-imagen {
+
+    height: 220px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background-color: #e9ecef;
+
+    color: #6c757d;
+
+    font-size: 18px;
+
+}
+
+
+/* =========================================================
+   TARJETAS
+========================================================= */
+
+.card {
+
+    /* Suaviza el efecto al pasar el mouse */
+    transition: transform 0.2s;
+
+}
+
+
+.card:hover {
+
+    /* Eleva visualmente la tarjeta */
+    transform: translateY(-3px);
+
+}

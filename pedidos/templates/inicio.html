@@ -4,10 +4,17 @@
 {% block content %}
 
 
+<!-- =====================================================
+     BIENVENIDA
+====================================================== -->
+
 <div class="p-4 bg-white rounded shadow-sm">
 
+
     <h1>
+
         Sistema web de pedidos
+
     </h1>
 
 
@@ -16,55 +23,70 @@
         Bienvenido,
 
         <strong>
+
             {{ user.first_name|default:user.username }}
+
         </strong>
 
     </p>
 
 
     <p>
-        El sistema se encuentra correctamente configurado.
+
+        Desde este sistema podrá consultar los productos
+        disponibles y revisar sus pedidos.
+
     </p>
 
 
-    <!-- =====================================================
-         INFORMACIÓN PARA ADMINISTRADORES
-    ====================================================== -->
+    <!-- =================================================
+         OPCIONES PRINCIPALES
+    ================================================== -->
 
-    {% if user.is_staff %}
+    <div class="d-flex flex-wrap gap-2 mt-4">
 
-    <div class="alert alert-warning">
 
-        <strong>
-            Usuario administrador
-        </strong>
+        <a
+            href="{% url 'tienda' %}"
+            class="btn btn-primary"
+        >
 
-        <p class="mb-2">
+            Ver tienda
 
-            Puede administrar usuarios, categorías,
-            productos y pedidos.
+        </a>
 
-        </p>
+
+        <a
+            href="{% url 'mis_pedidos' %}"
+            class="btn btn-outline-primary"
+        >
+
+            Mis pedidos
+
+        </a>
+
+
+        <!-- =============================================
+             SOLO ADMINISTRADORES
+        ============================================== -->
+
+        {% if user.is_staff %}
+
 
         <a
             href="{% url 'admin:index' %}"
-            class="btn btn-dark"
+            class="btn btn-warning"
         >
-            Ir a Administración
+
+            Administración
+
         </a>
 
-    </div>
 
+        {% endif %}
 
-    {% else %}
-
-    <div class="alert alert-info">
-
-        Ha ingresado como usuario del sistema.
 
     </div>
-
-    {% endif %}
 
 
 </div>
