@@ -1,6 +1,5 @@
 {% load static %}
 
-
 <!DOCTYPE html>
 
 <html lang="es">
@@ -8,20 +7,15 @@
 
 <head>
 
-
     <meta charset="UTF-8">
-
 
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1"
     >
 
-
     <title>
-
         Sistema de Cafetería
-
     </title>
 
 
@@ -44,7 +38,6 @@
         href="{% static 'css/base.css' %}"
     >
 
-
 </head>
 
 
@@ -52,7 +45,7 @@
 
 
 <!-- =====================================================
-     NAVEGACIÓN
+     MENÚ
 ====================================================== -->
 
 {% if user.is_authenticated %}
@@ -67,18 +60,14 @@
     <div class="container">
 
 
-        <!-- Nombre del sistema -->
         <a
             class="navbar-brand"
             href="{% url 'inicio' %}"
         >
-
             Cafetería
-
         </a>
 
 
-        <!-- Botón utilizado en pantallas pequeñas -->
         <button
             class="navbar-toggler"
             type="button"
@@ -86,14 +75,12 @@
             data-bs-target="#menuPrincipal"
         >
 
-            <span class="navbar-toggler-icon"></span>
+            <span
+                class="navbar-toggler-icon"
+            ></span>
 
         </button>
 
-
-        <!-- =============================================
-             MENÚ PRINCIPAL
-        ============================================== -->
 
         <div
             class="collapse navbar-collapse"
@@ -104,79 +91,80 @@
             <div class="navbar-nav me-auto">
 
 
-                <!-- INICIO -->
                 <a
                     class="nav-link"
                     href="{% url 'inicio' %}"
                 >
-
                     Inicio
-
                 </a>
 
 
-                <!-- TIENDA -->
                 <a
                     class="nav-link"
                     href="{% url 'tienda' %}"
                 >
-
                     Tienda
-
                 </a>
 
 
-                <!-- MIS PEDIDOS -->
+                <a
+                    class="nav-link"
+                    href="{% url 'ver_carrito' %}"
+                >
+                    Carrito
+                </a>
+
+
                 <a
                     class="nav-link"
                     href="{% url 'mis_pedidos' %}"
                 >
-
                     Mis pedidos
-
                 </a>
+
+
+                <!-- =====================================
+                     OPCIÓN SOLO PARA ADMINISTRADORES
+                ====================================== -->
+
+                {% if user.is_staff %}
+
+                <a
+                    class="nav-link"
+                    href="{% url 'reportes' %}"
+                >
+                    Reportes
+                </a>
+
+                {% endif %}
 
 
             </div>
 
 
-            <!-- =========================================
-                 USUARIO
-            ========================================== -->
-
-            <div class="d-flex align-items-center gap-2">
+            <div
+                class="d-flex align-items-center gap-2"
+            >
 
 
-                <span class="navbar-text text-white">
-
+                <span
+                    class="navbar-text text-white"
+                >
                     {{ user.username }}
-
                 </span>
 
 
-                <!-- =====================================
-                     SOLO ADMINISTRADORES
-                ====================================== -->
-
                 {% if user.is_staff %}
-
 
                 <a
                     href="{% url 'admin:index' %}"
                     class="btn btn-warning btn-sm"
                 >
-
                     Administración
-
                 </a>
-
 
                 {% endif %}
 
-
-                <!-- =====================================
-                     CERRAR SESIÓN
-                ====================================== -->
 
                 <form
                     method="post"
@@ -184,19 +172,14 @@
                     class="m-0"
                 >
 
-
                     {% csrf_token %}
-
 
                     <button
                         type="submit"
                         class="btn btn-outline-light btn-sm"
                     >
-
                         Cerrar sesión
-
                     </button>
-
 
                 </form>
 
@@ -217,14 +200,52 @@
 
 
 <!-- =====================================================
-     CONTENIDO VARIABLE
+     CONTENIDO
 ====================================================== -->
 
 <main class="container py-4">
 
 
-    {% block content %}
+    <!-- =================================================
+         MENSAJES DEL SISTEMA
+    ================================================== -->
 
+    {% if messages %}
+
+        {% for message in messages %}
+
+
+            <div
+                class="
+                    alert
+
+                    {% if message.tags == 'error' %}
+                        alert-danger
+
+                    {% elif message.tags == 'success' %}
+                        alert-success
+
+                    {% elif message.tags == 'warning' %}
+                        alert-warning
+
+                    {% else %}
+                        alert-info
+
+                    {% endif %}
+                "
+            >
+
+                {{ message }}
+
+            </div>
+
+
+        {% endfor %}
+
+    {% endif %}
+
+
+    {% block content %}
 
     {% endblock %}
 
@@ -233,9 +254,7 @@
 
 
 <!-- =====================================================
-     JAVASCRIPT DE BOOTSTRAP
-     Permite utilizar el menú desplegable en pantallas
-     pequeñas.
+     JAVASCRIPT BOOTSTRAP
 ====================================================== -->
 
 <script
@@ -245,6 +264,5 @@
 
 
 </body>
-
 
 </html>

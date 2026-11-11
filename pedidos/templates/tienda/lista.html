@@ -4,10 +4,6 @@
 {% block content %}
 
 
-<!-- =====================================================
-     ENCABEZADO
-====================================================== -->
-
 <div class="mb-4">
 
     <h1>
@@ -15,163 +11,195 @@
     </h1>
 
     <p class="text-muted">
-        Productos disponibles en nuestra cafetería.
+        Seleccione los productos
+        que desea agregar al pedido.
     </p>
 
 </div>
 
 
-<!-- =====================================================
-     PRODUCTOS
-====================================================== -->
-
 <div class="row g-4">
 
 
-    <!-- Recorremos todos los productos enviados
-         desde la vista tienda(). -->
-
-    {% for producto in productos %}
+{% for producto in productos %}
 
 
-    <div class="col-md-6 col-lg-4">
+<div class="col-md-6 col-lg-4">
 
 
-        <div class="card h-100 shadow-sm">
+    <div class="card h-100 shadow-sm">
 
 
-            <!-- ==========================================
-                 IMAGEN
-            =========================================== -->
+        <!-- =============================================
+             IMAGEN
+        ============================================== -->
 
-            {% if producto.imagen %}
+        {% if producto.imagen %}
 
-                <!-- Si el producto tiene una imagen,
-                     mostramos el archivo almacenado
-                     dentro de media/productos/. -->
+        <img
+            src="{{ producto.imagen.url }}"
+            class="card-img-top producto-imagen"
+            alt="{{ producto.nombre }}"
+        >
 
-                <img
-                    src="{{ producto.imagen.url }}"
-                    class="card-img-top producto-imagen"
-                    alt="{{ producto.nombre }}"
+        {% else %}
+
+        <div class="producto-sin-imagen">
+
+            Sin imagen
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- =============================================
+             DATOS
+        ============================================== -->
+
+        <div class="card-body">
+
+
+            <h5 class="card-title">
+
+                {{ producto.nombre }}
+
+            </h5>
+
+
+            <p class="text-muted">
+
+                {% if producto.categoria %}
+
+                    {{ producto.categoria.nombre }}
+
+                {% else %}
+
+                    Sin categoría
+
+                {% endif %}
+
+            </p>
+
+
+            <p>
+
+                {{ producto.descripcion }}
+
+            </p>
+
+
+            <h4 class="text-primary">
+
+                S/ {{ producto.precio }}
+
+            </h4>
+
+
+            {% if producto.stock > 0 %}
+
+            <p>
+
+                <span class="badge text-bg-success">
+
+                    Stock:
+                    {{ producto.stock }}
+
+                </span>
+
+            </p>
+
+
+            <!-- =========================================
+                 FORMULARIO PARA AGREGAR
+            ========================================== -->
+
+            <form
+                method="post"
+                action="{% url 'agregar_producto' producto.id %}"
+            >
+
+                {% csrf_token %}
+
+
+                <!-- Indicamos que venimos
+                     desde la tienda. -->
+
+                <input
+                    type="hidden"
+                    name="origen"
+                    value="tienda"
                 >
+
+
+                <button
+                    type="submit"
+                    class="btn btn-success w-100"
+                >
+
+                    Agregar al carrito
+
+                </button>
+
+
+            </form>
+
 
             {% else %}
 
-                <!-- Si no existe una imagen mostramos
-                     un espacio informativo. -->
 
-                <div class="producto-sin-imagen">
+            <p>
 
-                    Sin imagen
+                <span class="badge text-bg-danger">
 
-                </div>
+                    Sin stock
+
+                </span>
+
+            </p>
+
+
+            <button
+                class="btn btn-secondary w-100"
+                disabled
+            >
+
+                No disponible
+
+            </button>
+
 
             {% endif %}
 
 
-            <!-- ==========================================
-                 INFORMACIÓN DEL PRODUCTO
-            =========================================== -->
-
-            <div class="card-body">
-
-
-                <!-- Nombre -->
-                <h5 class="card-title">
-
-                    {{ producto.nombre }}
-
-                </h5>
-
-
-                <!-- Categoría -->
-                <p class="text-muted mb-2">
-
-                    Categoría:
-
-                    {% if producto.categoria %}
-
-                        {{ producto.categoria.nombre }}
-
-                    {% else %}
-
-                        Sin categoría
-
-                    {% endif %}
-
-                </p>
-
-
-                <!-- Descripción -->
-                <p class="card-text">
-
-                    {{ producto.descripcion|default:"Sin descripción." }}
-
-                </p>
-
-
-                <!-- Precio -->
-                <h4 class="text-primary">
-
-                    S/ {{ producto.precio }}
-
-                </h4>
-
-
-                <!-- ======================================
-                     STOCK
-                ======================================= -->
-
-                {% if producto.stock > 0 %}
-
-                    <span class="badge text-bg-success">
-
-                        Stock: {{ producto.stock }}
-
-                    </span>
-
-                {% else %}
-
-                    <span class="badge text-bg-danger">
-
-                        Sin stock
-
-                    </span>
-
-                {% endif %}
-
-
-            </div>
-
-
         </div>
 
 
     </div>
 
 
-    {% empty %}
+</div>
 
 
-    <!-- Este bloque se mostrará si no existen
-         productos activos en la base de datos. -->
+{% empty %}
 
-    <div class="col-12">
 
-        <div class="alert alert-info">
+<div class="col-12">
 
-            Actualmente no existen productos disponibles.
+    <div class="alert alert-info">
 
-        </div>
+        No existen productos disponibles.
 
     </div>
 
+</div>
 
-    {% endfor %}
+
+{% endfor %}
 
 
 </div>
 
 
 {% endblock %}
+

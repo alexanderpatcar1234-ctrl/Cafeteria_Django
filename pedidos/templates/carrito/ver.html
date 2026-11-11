@@ -1,0 +1,287 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<h1 class="mb-4">
+
+    Carrito
+
+</h1>
+
+
+{% if items %}
+
+
+<div class="table-responsive">
+
+
+<table
+    class="
+        table
+        table-bordered
+        table-hover
+        align-middle
+    "
+>
+
+
+<thead class="table-dark">
+
+<tr>
+
+    <th>
+        Producto
+    </th>
+
+    <th>
+        Precio
+    </th>
+
+    <th>
+        Cantidad
+    </th>
+
+    <th>
+        Subtotal
+    </th>
+
+    <th>
+        Acciones
+    </th>
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+
+{% for item in items %}
+
+
+<tr>
+
+
+    <td>
+
+        <strong>
+
+            {{ item.producto.nombre }}
+
+        </strong>
+
+    </td>
+
+
+    <td>
+
+        S/ {{ item.producto.precio }}
+
+    </td>
+
+
+    <td>
+
+        {{ item.cantidad }}
+
+    </td>
+
+
+    <td>
+
+        S/ {{ item.subtotal }}
+
+    </td>
+
+
+    <td>
+
+
+        <div class="d-flex gap-1">
+
+
+            <!-- =========================================
+                 AGREGAR UNA UNIDAD
+            ========================================== -->
+
+            <form
+                method="post"
+                action="{% url 'agregar_producto' item.producto.id %}"
+            >
+
+                {% csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="origen"
+                    value="carrito"
+                >
+
+                <button
+                    class="btn btn-success btn-sm"
+                    type="submit"
+                >
+                    +
+                </button>
+
+            </form>
+
+
+            <!-- =========================================
+                 RESTAR UNA UNIDAD
+            ========================================== -->
+
+            <form
+                method="post"
+                action="{% url 'restar_producto' item.producto.id %}"
+            >
+
+                {% csrf_token %}
+
+                <button
+                    class="btn btn-warning btn-sm"
+                    type="submit"
+                >
+                    -
+                </button>
+
+            </form>
+
+
+            <!-- =========================================
+                 ELIMINAR PRODUCTO
+            ========================================== -->
+
+            <form
+                method="post"
+                action="{% url 'eliminar_producto' item.producto.id %}"
+            >
+
+                {% csrf_token %}
+
+                <button
+                    class="btn btn-danger btn-sm"
+                    type="submit"
+                >
+                    Eliminar
+                </button>
+
+            </form>
+
+
+        </div>
+
+
+    </td>
+
+
+</tr>
+
+
+{% endfor %}
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+<!-- =====================================================
+     TOTAL
+====================================================== -->
+
+<div class="text-end">
+
+    <h3>
+
+        Total:
+        S/ {{ total }}
+
+    </h3>
+
+</div>
+
+
+<!-- =====================================================
+     BOTONES GENERALES
+====================================================== -->
+
+<div
+    class="
+        d-flex
+        justify-content-between
+        mt-4
+    "
+>
+
+
+    <!-- VACIAR -->
+
+    <form
+        method="post"
+        action="{% url 'vaciar_carrito' %}"
+    >
+
+        {% csrf_token %}
+
+        <button
+            type="submit"
+            class="btn btn-outline-danger"
+        >
+            Vaciar carrito
+        </button>
+
+    </form>
+
+
+    <!-- CONFIRMAR -->
+
+    <form
+        method="post"
+        action="{% url 'confirmar_pedido' %}"
+    >
+
+        {% csrf_token %}
+
+        <button
+            type="submit"
+            class="btn btn-primary"
+        >
+            Confirmar pedido
+        </button>
+
+    </form>
+
+
+</div>
+
+
+{% else %}
+
+
+<div class="alert alert-info">
+
+    El carrito se encuentra vacío.
+
+</div>
+
+
+<a
+    href="{% url 'tienda' %}"
+    class="btn btn-primary"
+>
+    Ir a la tienda
+</a>
+
+
+{% endif %}
+
+
+{% endblock %}

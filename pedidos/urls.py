@@ -1,22 +1,18 @@
-# Importamos path para poder definir las rutas
-# disponibles dentro de la aplicación.
+# =========================================================
+# URL DE LA APLICACIÓN
+# =========================================================
+
 from django.urls import path
 
-# Importamos las vistas creadas en views.py.
 from . import views
 
-
-# =========================================================
-# RUTAS DE LA APLICACIÓN
-# =========================================================
 
 urlpatterns = [
 
     # -----------------------------------------------------
-    # MÓDULO PRINCIPAL
+    # INICIO
     # -----------------------------------------------------
 
-    # Página principal después del inicio de sesión.
     path(
         "inicio/",
         views.inicio,
@@ -28,8 +24,6 @@ urlpatterns = [
     # TIENDA
     # -----------------------------------------------------
 
-    # Muestra todos los productos activos
-    # almacenados en la base de datos.
     path(
         "tienda/",
         views.tienda,
@@ -38,11 +32,60 @@ urlpatterns = [
 
 
     # -----------------------------------------------------
+    # CARRITO
+    # -----------------------------------------------------
+
+    # Mostrar carrito.
+    path(
+        "carrito/",
+        views.ver_carrito,
+        name="ver_carrito",
+    ),
+
+    # Agregar producto.
+    path(
+        "carrito/agregar/<int:producto_id>/",
+        views.agregar_producto,
+        name="agregar_producto",
+    ),
+
+    # Restar una unidad.
+    path(
+        "carrito/restar/<int:producto_id>/",
+        views.restar_producto,
+        name="restar_producto",
+    ),
+
+    # Eliminar completamente un producto.
+    path(
+        "carrito/eliminar/<int:producto_id>/",
+        views.eliminar_producto,
+        name="eliminar_producto",
+    ),
+
+    # Vaciar carrito.
+    path(
+        "carrito/vaciar/",
+        views.vaciar_carrito,
+        name="vaciar_carrito",
+    ),
+
+
+    # -----------------------------------------------------
+    # CONFIRMAR PEDIDO
+    # -----------------------------------------------------
+
+    path(
+        "pedido/confirmar/",
+        views.confirmar_pedido,
+        name="confirmar_pedido",
+    ),
+
+
+    # -----------------------------------------------------
     # PEDIDOS DEL USUARIO
     # -----------------------------------------------------
 
-    # Muestra únicamente los pedidos
-    # pertenecientes al usuario autenticado.
     path(
         "mis-pedidos/",
         views.mis_pedidos,
@@ -51,18 +94,24 @@ urlpatterns = [
 
 
     # -----------------------------------------------------
-    # DETALLE DE PEDIDO
+    # DETALLE
     # -----------------------------------------------------
 
-    # <int:pedido_id> representa el identificador
-    # numérico del pedido que queremos consultar.
-    #
-    # Ejemplo:
-    # /pedido/5/
     path(
         "pedido/<int:pedido_id>/",
         views.detalle_pedido,
         name="detalle_pedido",
+    ),
+
+
+    # -----------------------------------------------------
+    # REPORTES
+    # -----------------------------------------------------
+
+    path(
+        "reportes/",
+        views.reportes,
+        name="reportes",
     ),
 
 ]

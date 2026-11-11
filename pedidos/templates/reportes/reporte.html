@@ -1,0 +1,468 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<!-- =====================================================
+     TÍTULO
+====================================================== -->
+
+<h1 class="mb-4">
+
+    Reportes
+
+</h1>
+
+
+<!-- =====================================================
+     FILTROS
+====================================================== -->
+
+<div class="card mb-4">
+
+
+<div class="card-body">
+
+
+<form method="get">
+
+
+    <!-- Errores generales del formulario -->
+    {{ form.non_field_errors }}
+
+
+    <div class="row g-3">
+
+
+        <div class="col-md-4">
+
+            {{ form.fecha_desde.label_tag }}
+
+            {{ form.fecha_desde }}
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            {{ form.fecha_hasta.label_tag }}
+
+            {{ form.fecha_hasta }}
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            {{ form.estado.label_tag }}
+
+            {{ form.estado }}
+
+        </div>
+
+
+    </div>
+
+
+    <div class="mt-3">
+
+
+        <button
+            class="btn btn-primary"
+            type="submit"
+        >
+            Filtrar
+        </button>
+
+
+        <a
+            href="{% url 'reportes' %}"
+            class="btn btn-secondary"
+        >
+            Limpiar filtros
+        </a>
+
+
+    </div>
+
+
+</form>
+
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     INDICADORES
+====================================================== -->
+
+<div class="row g-3 mb-4">
+
+
+    <!-- PEDIDOS -->
+
+    <div class="col-md-3">
+
+        <div class="card text-center shadow-sm">
+
+            <div class="card-body">
+
+                <h6>
+                    Pedidos
+                </h6>
+
+                <h2>
+                    {{ cantidad_pedidos }}
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- VENTAS -->
+
+    <div class="col-md-3">
+
+        <div class="card text-center shadow-sm">
+
+            <div class="card-body">
+
+                <h6>
+                    Ventas
+                </h6>
+
+                <h2>
+                    S/ {{ total_ventas }}
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- UNIDADES -->
+
+    <div class="col-md-3">
+
+        <div class="card text-center shadow-sm">
+
+            <div class="card-body">
+
+                <h6>
+                    Unidades vendidas
+                </h6>
+
+                <h2>
+                    {{ unidades_vendidas }}
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- PRODUCTO MÁS SOLICITADO -->
+
+    <div class="col-md-3">
+
+        <div class="card text-center shadow-sm">
+
+            <div class="card-body">
+
+                <h6>
+                    Más solicitado
+                </h6>
+
+                <strong>
+                    {{ producto_top_nombre }}
+                </strong>
+
+                <p class="mb-0">
+
+                    {{ producto_top_cantidad }}
+                    unidades
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     GRÁFICO
+====================================================== -->
+
+<div class="card mb-4">
+
+
+<div class="card-body">
+
+
+    <h4>
+
+        Productos más solicitados
+
+    </h4>
+
+
+    <canvas
+        id="graficoProductos"
+        height="100"
+    ></canvas>
+
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     PEDIDOS FILTRADOS
+====================================================== -->
+
+<div class="card">
+
+
+<div class="card-body">
+
+
+<h4>
+
+    Pedidos encontrados
+
+</h4>
+
+
+<div class="table-responsive">
+
+
+<table class="table table-striped">
+
+
+<thead>
+
+<tr>
+
+    <th>
+        Pedido
+    </th>
+
+    <th>
+        Usuario
+    </th>
+
+    <th>
+        Fecha
+    </th>
+
+    <th>
+        Estado
+    </th>
+
+    <th>
+        Total
+    </th>
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+
+{% for pedido in pedidos_tabla %}
+
+
+<tr>
+
+    <td>
+
+        #{{ pedido.id }}
+
+    </td>
+
+    <td>
+
+        {{ pedido.usuario.username }}
+
+    </td>
+
+    <td>
+
+        {{ pedido.fecha|date:"d/m/Y H:i" }}
+
+    </td>
+
+    <td>
+
+        {{ pedido.get_estado_display }}
+
+    </td>
+
+    <td>
+
+        S/ {{ pedido.total }}
+
+    </td>
+
+</tr>
+
+
+{% empty %}
+
+
+<tr>
+
+    <td
+        colspan="5"
+        class="text-center"
+    >
+
+        No existen pedidos
+        para los filtros seleccionados.
+
+    </td>
+
+</tr>
+
+
+{% endfor %}
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     DATOS SEGUROS PARA JAVASCRIPT
+====================================================== -->
+
+{{ grafico_labels|json_script:"grafico-labels" }}
+
+{{ grafico_datos|json_script:"grafico-datos" }}
+
+
+<!-- =====================================================
+     CHART.JS
+====================================================== -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/chart.js"
+>
+</script>
+
+
+<script>
+
+
+// Recuperamos los nombres enviados
+// desde Django.
+const labels = JSON.parse(
+    document.getElementById(
+        "grafico-labels"
+    ).textContent
+);
+
+
+// Recuperamos las cantidades.
+const datos = JSON.parse(
+    document.getElementById(
+        "grafico-datos"
+    ).textContent
+);
+
+
+// Obtenemos el elemento canvas.
+const contexto = document.getElementById(
+    "graficoProductos"
+);
+
+
+// Creamos el gráfico.
+new Chart(
+    contexto,
+    {
+
+        type: "bar",
+
+        data: {
+
+            labels: labels,
+
+            datasets: [
+
+                {
+
+                    label:
+                        "Unidades vendidas",
+
+                    data:
+                        datos,
+
+                }
+
+            ],
+
+        },
+
+        options: {
+
+            responsive:
+                true,
+
+            scales: {
+
+                y: {
+
+                    beginAtZero:
+                        true,
+
+                    ticks: {
+
+                        precision:
+                            0,
+
+                    },
+
+                },
+
+            },
+
+        },
+
+    }
+);
+
+
+</script>
+
+
+{% endblock %}

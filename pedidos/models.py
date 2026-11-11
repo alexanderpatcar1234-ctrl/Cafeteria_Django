@@ -130,26 +130,52 @@ class Pedido(models.Model):
 
 class DetallePedido(models.Model):
 
-    # Pedido al que pertenece este detalle.
+    # Pedido al que pertenece este producto.
     pedido = models.ForeignKey(
         Pedido,
         on_delete=models.CASCADE,
         related_name="detalles",
     )
 
-    # Producto incluido.
+    # Producto seleccionado.
     producto = models.ForeignKey(
         Producto,
         on_delete=models.CASCADE,
         related_name="detalles_pedido",
     )
 
-    # Cantidad solicitada.
-    cantidad = models.PositiveIntegerField(default=1)
+    # Cantidad comprada.
+    cantidad = models.PositiveIntegerField(
+        default=1
+    )
+
+    # Precio que tenía el producto
+    # cuando se confirmó el pedido.
+    #
+    # Este valor se guarda para evitar que
+    # un cambio posterior en Producto.precio
+    # modifique pedidos antiguos.
+    precio_unitario = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        default=0,
+    )
+
+    # Calculamos el subtotal de esta línea.
+    @property
+    def subtotal(self):
+
+        return self.precio_unitario * self.cantidad
 
     def __str__(self):
-        return f"{self.producto.nombre} x{self.cantidad}"
+
+        return (
+            f"{self.producto.nombre} "
+            f"x{self.cantidad}"
+        )
 
     class Meta:
+
         verbose_name = "Detalle de pedido"
+
         verbose_name_plural = "Detalles de pedido"
