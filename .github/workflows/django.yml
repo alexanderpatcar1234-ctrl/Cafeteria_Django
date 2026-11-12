@@ -109,3 +109,13 @@ jobs:
       - name: Aplicar migraciones
 
         run: python manage.py migrate
+
+              # ---------------------------------------------------
+      # EJECUTAR PRUEBAS AUTOMÁTICAS
+      # ---------------------------------------------------
+
+      # Ejecutamos las pruebas creadas
+      # dentro de pedidos/tests.py.
+      - name: Ejecutar pruebas Django
+
+        run: python manage.py test

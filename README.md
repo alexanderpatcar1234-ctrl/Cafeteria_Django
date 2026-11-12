@@ -22,21 +22,49 @@ El proyecto permite trabajar con autenticación de usuarios, productos con imág
 
 ## Funcionalidades
 
-Actualmente el sistema incluye:
-
-- Inicio de sesión.
-- Cierre de sesión.
-- Control de acceso a vistas protegidas.
+- Inicio y cierre de sesión.
+- Control de acceso.
 - Gestión de usuarios.
 - Gestión de categorías.
 - CRUD de productos.
 - Productos con imágenes.
-- Control de stock.
+- Catálogo de productos.
+- Carrito de compras.
+- Incremento y reducción de cantidades.
+- Eliminación de productos del carrito.
+- Validación de stock.
+- Confirmación de pedidos.
+- Actualización automática de stock.
+- Historial de pedidos por usuario.
+- Detalle de pedidos.
+- Administración mediante Django Admin.
+- Reportes administrativos.
+- Filtros por fecha y estado.
+- Indicadores de pedidos y ventas.
+- Gráfico de productos más solicitados.
+- Pruebas automáticas.
+- GitHub Actions.
+
+## Flujo principal
+
+Login
+→ Inicio
+→ Tienda
+→ Carrito
+→ Confirmar pedido
+→ Mis pedidos
+→ Detalle
+
+## Administración
+
+Los usuarios administradores disponen adicionalmente de:
+
+- Panel Django Admin.
+- Gestión de usuarios.
+- Gestión de productos.
+- Gestión de categorías.
 - Gestión de pedidos.
-- Consulta de pedidos por usuario.
-- Panel de administración.
-- Control de versiones con Git y GitHub.
-- Verificación automática mediante GitHub Actions.
+- Vista de reportes.
 
 ---
 
