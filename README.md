@@ -44,6 +44,13 @@ El proyecto permite trabajar con autenticación de usuarios, productos con imág
 - Gráfico de productos más solicitados.
 - Pruebas automáticas.
 - GitHub Actions.
+- Búsqueda de productos por nombre.
+- Filtro de productos por categoría.
+- Búsqueda de productos desde el carrito.
+- Incorporación de productos directamente desde el carrito.
+- Indicador de productos con bajo stock.
+- Reporte de productos con bajo stock.
+- Identificación visual del estado de los pedidos.
 
 ## Flujo principal
 

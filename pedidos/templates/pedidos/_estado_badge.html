@@ -1,0 +1,61 @@
+<!-- =====================================================
+     ESTADO DEL PEDIDO
+====================================================== -->
+
+
+{% if pedido.estado == "PENDIENTE" %}
+
+
+    <!-- Pendiente = amarillo -->
+    <span class="badge text-bg-warning">
+
+        Pendiente
+
+    </span>
+
+
+{% elif pedido.estado == "PREPARACION" %}
+
+
+    <!-- En preparación = azul -->
+    <span class="badge text-bg-primary">
+
+        En preparación
+
+    </span>
+
+
+{% elif pedido.estado == "ATENDIDO" %}
+
+
+    <!-- Atendido = verde -->
+    <span class="badge text-bg-success">
+
+        Atendido
+
+    </span>
+
+
+{% elif pedido.estado == "CANCELADO" %}
+
+
+    <!-- Cancelado = rojo -->
+    <span class="badge text-bg-danger">
+
+        Cancelado
+
+    </span>
+
+
+{% else %}
+
+
+    <!-- Seguridad ante un estado desconocido -->
+    <span class="badge text-bg-secondary">
+
+        {{ pedido.get_estado_display }}
+
+    </span>
+
+
+{% endif %}

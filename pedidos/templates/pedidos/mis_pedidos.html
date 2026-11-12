@@ -104,7 +104,7 @@
 
                     <span class="badge text-bg-secondary">
 
-                        {{ pedido.get_estado_display }}
+                        {% include "pedidos/_estado_badge.html" with pedido=pedido %}
 
                     </span>
 

@@ -9,7 +9,295 @@
     Carrito
 
 </h1>
+<!-- =====================================================
+     BUSCAR OTRO PRODUCTO
+====================================================== -->
 
+<div class="card mb-4 shadow-sm">
+
+
+    <div class="card-header">
+
+
+        <strong>
+            Agregar otro producto
+        </strong>
+
+
+    </div>
+
+
+    <div class="card-body">
+
+
+        <!-- =============================================
+             FILTROS
+        ============================================== -->
+
+        <form method="get">
+
+
+            <div class="row g-3 align-items-end">
+
+
+                <!-- Búsqueda -->
+                <div class="col-md-5">
+
+
+                    {{ form.busqueda.label_tag }}
+
+
+                    {{ form.busqueda }}
+
+
+                </div>
+
+
+                <!-- Categoría -->
+                <div class="col-md-4">
+
+
+                    {{ form.categoria.label_tag }}
+
+
+                    {{ form.categoria }}
+
+
+                </div>
+
+
+                <!-- Botones -->
+                <div class="col-md-3">
+
+
+                    <div class="d-flex gap-2">
+
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+                            Buscar
+                        </button>
+
+
+                        <a
+                            href="{% url 'ver_carrito' %}"
+                            class="btn btn-secondary"
+                        >
+                            Limpiar
+                        </a>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+
+</div>
+
+<!-- =====================================================
+     RESULTADOS DE PRODUCTOS
+====================================================== -->
+
+{% if mostrar_resultados %}
+
+
+<div class="card mb-4">
+
+
+    <div class="card-body">
+
+
+        <h5 class="mb-3">
+            Productos disponibles
+        </h5>
+
+
+        <div class="table-responsive">
+
+
+            <table
+                class="
+                    table
+                    table-sm
+                    table-hover
+                    align-middle
+                "
+            >
+
+
+                <thead>
+
+
+                    <tr>
+
+                        <th>
+                            Producto
+                        </th>
+
+                        <th>
+                            Categoría
+                        </th>
+
+                        <th>
+                            Precio
+                        </th>
+
+                        <th>
+                            Stock
+                        </th>
+
+                        <th>
+                            Acción
+                        </th>
+
+                    </tr>
+
+
+                </thead>
+
+
+                <tbody>
+
+
+                    {% for producto in productos_disponibles %}
+
+
+                    <tr>
+
+
+                        <!-- PRODUCTO -->
+                        <td>
+
+                            {{ producto.nombre }}
+
+                        </td>
+
+
+                        <!-- CATEGORÍA -->
+                        <td>
+
+
+                            {% if producto.categoria %}
+
+                                {{ producto.categoria.nombre }}
+
+                            {% else %}
+
+                                Sin categoría
+
+                            {% endif %}
+
+
+                        </td>
+
+
+                        <!-- PRECIO -->
+                        <td>
+
+                            S/ {{ producto.precio }}
+
+                        </td>
+
+
+                        <!-- STOCK -->
+                        <td>
+
+                            {{ producto.stock }}
+
+                        </td>
+
+
+                        <!-- AGREGAR -->
+                        <td>
+
+
+                            <form
+                                method="post"
+                                action="{% url 'agregar_producto' producto.id %}"
+                            >
+
+
+                                {% csrf_token %}
+
+
+                                <!-- Indicamos que estamos
+                                     agregando desde carrito. -->
+
+                                <input
+                                    type="hidden"
+                                    name="origen"
+                                    value="carrito"
+                                >
+
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-success btn-sm"
+                                >
+                                    Agregar
+                                </button>
+
+
+                            </form>
+
+
+                        </td>
+
+
+                    </tr>
+
+
+                    {% empty %}
+
+
+                    <tr>
+
+
+                        <td
+                            colspan="5"
+                            class="text-center text-muted"
+                        >
+
+                            No se encontraron productos
+                            con los criterios indicados.
+
+                        </td>
+
+
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+{% endif %}
 
 {% if items %}
 

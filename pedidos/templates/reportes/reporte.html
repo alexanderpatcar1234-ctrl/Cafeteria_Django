@@ -202,6 +202,43 @@
 
 
 </div>
+<!-- =====================================================
+     PRODUCTOS CON BAJO STOCK
+====================================================== -->
+
+<div class="col-md-3">
+
+    <div class="card text-center shadow-sm">
+
+        <div class="card-body">
+
+
+            <h6>
+
+                Productos con bajo stock
+
+            </h6>
+
+
+            <h2>
+
+                {{ cantidad_bajo_stock }}
+
+            </h2>
+
+
+            <small class="text-muted">
+
+                5 unidades o menos
+
+            </small>
+
+
+        </div>
+
+    </div>
+
+</div>
 
 
 <!-- =====================================================
@@ -232,6 +269,170 @@
 
 </div>
 
+<!-- =====================================================
+     PRODUCTOS CON BAJO STOCK
+====================================================== -->
+
+<div class="card mb-4">
+
+
+    <div class="card-body">
+
+
+        <h4 class="mb-3">
+
+            Productos con bajo stock
+
+        </h4>
+
+
+        <div class="table-responsive">
+
+
+            <table
+                class="
+                    table
+                    table-striped
+                    align-middle
+                "
+            >
+
+
+                <thead class="table-dark">
+
+
+                    <tr>
+
+                        <th>
+                            Producto
+                        </th>
+
+                        <th>
+                            Categoría
+                        </th>
+
+                        <th>
+                            Stock
+                        </th>
+
+                        <th>
+                            Situación
+                        </th>
+
+                    </tr>
+
+
+                </thead>
+
+
+                <tbody>
+
+
+                    {% for producto in productos_bajo_stock %}
+
+
+                    <tr>
+
+
+                        <td>
+
+                            {{ producto.nombre }}
+
+                        </td>
+
+
+                        <td>
+
+
+                            {% if producto.categoria %}
+
+                                {{ producto.categoria.nombre }}
+
+                            {% else %}
+
+                                Sin categoría
+
+                            {% endif %}
+
+
+                        </td>
+
+
+                        <td>
+
+                            {{ producto.stock }}
+
+                        </td>
+
+
+                        <td>
+
+
+                            {% if producto.stock == 0 %}
+
+
+                                <span
+                                    class="badge text-bg-danger"
+                                >
+                                    Sin stock
+                                </span>
+
+
+                            {% else %}
+
+
+                                <span
+                                    class="badge text-bg-warning"
+                                >
+                                    Bajo stock
+                                </span>
+
+
+                            {% endif %}
+
+
+                        </td>
+
+
+                    </tr>
+
+
+                    {% empty %}
+
+
+                    <tr>
+
+
+                        <td
+                            colspan="4"
+                            class="text-center"
+                        >
+
+                            No existen productos
+                            con bajo stock.
+
+                        </td>
+
+
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
 
 <!-- =====================================================
      PEDIDOS FILTRADOS
@@ -313,7 +514,7 @@
 
     <td>
 
-        {{ pedido.get_estado_display }}
+        {% include "pedidos/_estado_badge.html" with pedido=pedido %}
 
     </td>
 
